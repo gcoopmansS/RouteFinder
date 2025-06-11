@@ -1,0 +1,38 @@
+.landing-card {
+  /* Add your RoutePlanner-specific styles here */
+}
+
+/* Example: style for the map container */
+.route-map-container {
+  margin-bottom: 24px;
+}
+
+/* Example: style for the plan another route button */
+.plan-another-btn {
+  margin-top: 24px;
+}
+
+.route-type-btn,
+.direction-btn {
+  background: #f1f5f9;
+  border: 1.5px solid #cbd5e1;
+  border-radius: 6px;
+  padding: 0.4rem 1.2rem;
+  font-size: 1em;
+  color: #334155;
+  cursor: pointer;
+  transition: background 0.15s, border 0.15s;
+}
+
+.route-type-btn.selected,
+.direction-btn.selected {
+  background: #14b8a6;
+  color: #fff;
+  border-color: #14b8a6;
+}
+
+.route-type-btn:not(.selected):hover,
+.direction-btn:not(.selected):hover {
+  background: #e0f2fe;
+  border-color: #7dd3fc;
+}
