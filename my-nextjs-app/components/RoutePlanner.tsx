@@ -422,7 +422,7 @@ const RoutePlanner: React.FC = () => {
       <div
         style={{
           position: "fixed",
-          left: PANEL_WIDTH,
+          left: `calc(${PANEL_WIDTH}px + 60px)`,
           top: "52px",
           right: 0,
           bottom: 0,
