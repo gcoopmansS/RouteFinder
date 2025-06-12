@@ -19,9 +19,20 @@ interface RouteConfigPanelProps {
   sportOptions: any[];
   terrainOptions: any[];
   route: any;
+  CompassDirectionSelector?: React.FC<{
+    direction: number;
+    setDirection: (dir: number) => void;
+  }>;
 }
 
-const RouteConfigPanel: React.FC<RouteConfigPanelProps> = ({
+const RouteConfigPanel: React.FC<
+  RouteConfigPanelProps & {
+    CompassDirectionSelector?: React.FC<{
+      direction: number;
+      setDirection: (dir: number) => void;
+    }>;
+  }
+> = ({
   selectedSport,
   setSelectedSport,
   distance,
@@ -40,8 +51,9 @@ const RouteConfigPanel: React.FC<RouteConfigPanelProps> = ({
   sportOptions,
   terrainOptions,
   route,
+  CompassDirectionSelector,
 }) => (
-  <div>
+  <div className="route-config-panel">
     <form onSubmit={handleSubmit} className="preferences-form">
       <h2 style={{ marginBottom: 16 }}>Plan Your Route</h2>
       <label>What's your sport?</label>
@@ -77,22 +89,34 @@ const RouteConfigPanel: React.FC<RouteConfigPanelProps> = ({
       <label>What terrain do you prefer?</label>
       <div className="terrain-options">
         {terrainOptions.map((opt) => (
-          <button
-            type="button"
-            key={opt.value}
+          <div
             className={`terrain-btn${
               selectedTerrain === opt.value ? " selected" : ""
             }`}
             onClick={() => setSelectedTerrain(opt.value)}
             aria-pressed={selectedTerrain === opt.value}
+            key={opt.value}
           >
-            <div style={{ fontWeight: 700 }}>{opt.label}</div>
             <div
-              style={{ fontWeight: 400, fontSize: "0.97em", color: "#64748b" }}
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                gap: 4,
+              }}
             >
-              {opt.desc}
+              {opt.icon}
+              <div
+                style={{
+                  fontWeight: 700,
+                  fontSize: "1.05em",
+                  marginTop: 4,
+                }}
+              >
+                {opt.label}
+              </div>
             </div>
-          </button>
+          </div>
         ))}
       </div>
       <label>Route Type</label>
@@ -172,44 +196,12 @@ const RouteConfigPanel: React.FC<RouteConfigPanelProps> = ({
         ))}
       </div>
       <label>Direction</label>
-      <div
-        className="direction-options"
-        style={{ display: "flex", gap: 20, marginBottom: 24 }}
-      >
-        {[
-          { label: "North", value: 0 },
-          { label: "East", value: 90 },
-          { label: "South", value: 180 },
-          { label: "West", value: 270 },
-        ].map((opt) => (
-          <button
-            type="button"
-            key={opt.value}
-            className={`direction-btn${
-              direction === opt.value ? " selected" : ""
-            }`}
-            onClick={() => setDirection(opt.value)}
-            aria-pressed={direction === opt.value}
-            style={{
-              padding: "1.1em 1.5em",
-              borderRadius: 16,
-              border: "2px solid #cbd5e1",
-              background: direction === opt.value ? "#ecfdf5" : "#f8fafc",
-              color: direction === opt.value ? "#14b8a6" : "#334155",
-              fontWeight: 700,
-              fontSize: "1.1em",
-              marginBottom: 0,
-              boxShadow: direction === opt.value ? "0 0 0 2px #14b8a6" : "none",
-              transition: "all 0.15s",
-              outline: "none",
-              minWidth: 100,
-              justifyContent: "center",
-            }}
-          >
-            {opt.label}
-          </button>
-        ))}
-      </div>
+      {CompassDirectionSelector ? (
+        <CompassDirectionSelector
+          direction={direction}
+          setDirection={setDirection}
+        />
+      ) : null}
       {loading && (
         <div style={{ marginTop: 20, color: "#14b8a6" }}>
           Generating route...

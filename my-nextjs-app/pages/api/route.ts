@@ -19,11 +19,15 @@ export default async function handler(
 
   let body: any = { coordinates: [start] };
   if (roundTrip) {
+    // Use direction as initial heading for round trip
     body.options = {
       round_trip: {
         length: distance * 1000, // meters
         points: 3 + Math.floor(Math.random() * 3), // 3-5 points for variety
         seed: Math.floor(Math.random() * 100000),
+        ...(typeof direction === "number" && {
+          initial_heading: direction, // OpenRouteService supports this option
+        }),
       },
     };
   } else {

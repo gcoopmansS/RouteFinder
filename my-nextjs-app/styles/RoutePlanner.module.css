@@ -12,16 +12,53 @@
   margin-top: 24px;
 }
 
+.route-config-panel {
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 2px 16px rgba(20, 184, 166, 0.07);
+  padding: 32px 24px 32px 24px;
+  margin-top: 110px; /* Ensure below header */
+  min-width: 320px;
+  max-width: 420px;
+  width: 100%;
+  box-sizing: border-box;
+  position: sticky;
+  top: 80px; /* Stick below header */
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+@media (max-width: 600px) {
+  .route-config-panel {
+    padding: 16px 4px 24px 4px;
+    min-width: 0;
+    max-width: 100vw;
+    margin-top: 80px;
+    top: 60px;
+  }
+}
+
+.route-type-options,
+.direction-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 20px;
+  width: 100%;
+}
+
 .route-type-btn,
 .direction-btn {
-  background: #f1f5f9;
-  border: 1.5px solid #cbd5e1;
-  border-radius: 6px;
-  padding: 0.4rem 1.2rem;
-  font-size: 1em;
-  color: #334155;
-  cursor: pointer;
-  transition: background 0.15s, border 0.15s;
+  min-width: 120px;
+  max-width: 48%;
+  flex: 1 1 120px;
+  box-sizing: border-box;
+  white-space: normal;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-break: break-word;
 }
 
 .route-type-btn.selected,
@@ -35,4 +72,14 @@
 .direction-btn:not(.selected):hover {
   background: #e0f2fe;
   border-color: #7dd3fc;
+}
+
+@media (max-width: 600px) {
+  .route-type-btn,
+  .direction-btn {
+    min-width: 90px;
+    font-size: 0.95em;
+    padding: 0.7em 0.5em;
+    max-width: 100%;
+  }
 }
