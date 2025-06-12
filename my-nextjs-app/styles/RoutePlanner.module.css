@@ -9,7 +9,7 @@
 
 /* Example: style for the plan another route button */
 .plan-another-btn {
-  margin-top: 24px;
+  margin-top: 0px;
 }
 
 .route-config-panel {
@@ -40,25 +40,28 @@
   }
 }
 
-.route-type-options,
-.direction-options {
+.route-type-options {
   display: flex;
   flex-wrap: wrap;
-  gap: 12px;
+  gap: 1.2rem;
   margin-bottom: 20px;
   width: 100%;
 }
 
-.route-type-btn,
-.direction-btn {
-  min-width: 120px;
-  max-width: 48%;
-  flex: 1 1 120px;
-  box-sizing: border-box;
-  white-space: normal;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  word-break: break-word;
+.route-type-btn {
+  flex: 1;
+  background: #f8fafc;
+  border: 2px solid #e0e7ef;
+  border-radius: 16px;
+  padding: 1.3rem 0;
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: #334155;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  transition: border 0.2s, background 0.2s, color 0.2s;
 }
 
 .route-type-btn.selected,

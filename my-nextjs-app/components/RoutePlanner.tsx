@@ -276,6 +276,8 @@ const CompassDirectionSelector: React.FC<{
   );
 };
 
+const PANEL_WIDTH = 420;
+
 const RoutePlanner: React.FC = () => {
   const [selectedSport, setSelectedSport] = useState("Cycling");
   const [distance, setDistance] = useState(20);
@@ -288,6 +290,15 @@ const RoutePlanner: React.FC = () => {
   const [useCurrentLocation, setUseCurrentLocation] = useState(false);
   const [isRoundTrip, setIsRoundTrip] = useState(true);
   const [direction, setDirection] = useState<number>(0);
+
+  // Track window height for SSR-safe rendering
+  const [windowHeight, setWindowHeight] = useState(600);
+  useEffect(() => {
+    const updateHeight = () => setWindowHeight(window.innerHeight);
+    updateHeight();
+    window.addEventListener("resize", updateHeight);
+    return () => window.removeEventListener("resize", updateHeight);
+  }, []);
 
   // Set current location on mount
   useEffect(() => {
@@ -360,21 +371,28 @@ const RoutePlanner: React.FC = () => {
   return (
     <div
       style={{
+        position: "relative",
+        width: "100vw",
+        height: "100vh",
+        overflow: "hidden",
         display: "flex",
         alignItems: "flex-start",
-        width: "100%",
-        maxWidth: 1400,
-        margin: "0 auto",
-        minHeight: 600,
+        background: "#f8fafc",
       }}
     >
       {/* Left: Configuration Controls */}
       <div
         style={{
-          flex: "0 0 370px",
+          position: "relative",
+          width: PANEL_WIDTH,
           minWidth: 320,
           maxWidth: 420,
-          padding: "32px 32px 32px 0",
+          height: "100vh",
+          overflowY: "auto",
+          background: "#fff",
+          zIndex: 2,
+          boxShadow: "2px 0 8px #e0e7ef33",
+          padding: "32px 32px 32px 32px",
         }}
       >
         <RouteConfigPanel
@@ -399,25 +417,24 @@ const RoutePlanner: React.FC = () => {
           CompassDirectionSelector={CompassDirectionSelector}
         />
       </div>
-      {/* Vertical divider */}
-      <div
-        style={{
-          width: 1,
-          background: "#e5e7eb",
-          minHeight: 600,
-          margin: "0 32px",
-        }}
-      />
+
       {/* Right: Map only */}
       <div
         style={{
-          flex: "1 1 700px",
-          minWidth: 400,
-          maxWidth: 900,
-          padding: 32,
+          position: "fixed",
+          left: PANEL_WIDTH,
+          top: "52px",
+          right: 0,
+          bottom: 0,
+          width: `calc(100vw - ${PANEL_WIDTH}px)`,
+          height: "100vh",
+          zIndex: 1,
+          background: "#e0e7ef",
+          display: "flex",
+          alignItems: "stretch",
         }}
       >
-        <div style={{ height: 520, width: "100%" }}>
+        <div style={{ width: "100%", height: "100%" }}>
           <RouteMap
             geojson={route}
             center={mapCenter}
@@ -430,7 +447,7 @@ const RoutePlanner: React.FC = () => {
             markerPopup={
               useCurrentLocation ? "Current location" : "Start location"
             }
-            height={520}
+            height={windowHeight}
             onGoToCurrentLocation={() => {
               if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(
