@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { generateRoute } from "../utils/routeGenerator";
 import dynamic from "next/dynamic";
 import RouteConfigPanel from "./RouteConfigPanel";
+import styles from "../styles/RoutePlanner.module.css";
 
 const RouteMap = dynamic(() => import("./RouteMap"), { ssr: false });
 
@@ -369,32 +370,9 @@ const RoutePlanner: React.FC = () => {
   const mapCenter: [number, number] = [startLat ?? 50.8503, startLng ?? 4.3517];
 
   return (
-    <div
-      style={{
-        position: "relative",
-        width: "100vw",
-        height: "100vh",
-        overflow: "hidden",
-        display: "flex",
-        alignItems: "flex-start",
-        background: "#f8fafc",
-      }}
-    >
+    <div className={styles.routePlannerRoot}>
       {/* Left: Configuration Controls */}
-      <div
-        style={{
-          position: "relative",
-          width: PANEL_WIDTH,
-          minWidth: 320,
-          maxWidth: 420,
-          height: "100vh",
-          overflowY: "auto",
-          background: "#fff",
-          zIndex: 2,
-          boxShadow: "2px 0 8px #e0e7ef33",
-          padding: "32px 32px 32px 32px",
-        }}
-      >
+      <div className={styles.configPanel}>
         <RouteConfigPanel
           selectedSport={selectedSport}
           setSelectedSport={setSelectedSport}
@@ -419,22 +397,8 @@ const RoutePlanner: React.FC = () => {
       </div>
 
       {/* Right: Map only */}
-      <div
-        style={{
-          position: "fixed",
-          left: `calc(${PANEL_WIDTH}px + 60px)`,
-          top: "52px",
-          right: 0,
-          bottom: 0,
-          width: `calc(100vw - ${PANEL_WIDTH}px)`,
-          height: "100vh",
-          zIndex: 1,
-          background: "#e0e7ef",
-          display: "flex",
-          alignItems: "stretch",
-        }}
-      >
-        <div style={{ width: "100%", height: "100%" }}>
+      <div className={styles.mapPanel}>
+        <div className={styles.mapInner}>
           <RouteMap
             geojson={route}
             center={mapCenter}

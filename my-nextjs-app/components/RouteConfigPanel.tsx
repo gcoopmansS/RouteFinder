@@ -54,7 +54,12 @@ const RouteConfigPanel: React.FC<
   CompassDirectionSelector,
 }) => (
   <div className="route-config-panel">
-    <form onSubmit={handleSubmit} className="preferences-form">
+    <form
+      id="route-config-form"
+      onSubmit={handleSubmit}
+      className="preferences-form"
+      style={{ paddingBottom: 80 }}
+    >
       <h2 style={{ marginBottom: 16 }}>Plan Your Route</h2>
       <label>What's your sport?</label>
       <div className="sport-options">
@@ -208,21 +213,24 @@ const RouteConfigPanel: React.FC<
         </div>
       )}
       {error && <div style={{ marginTop: 20, color: "#dc2626" }}>{error}</div>}
+    </form>
+    <div className="sticky-submit-btn-container">
       <button
         type="submit"
+        form="route-config-form"
         className="submit-btn"
         style={{
-          marginTop: 12,
           width: "100%",
           fontSize: "1.1em",
           padding: "1em 0",
+          borderRadius: 0,
         }}
         disabled={loading}
       >
         {loading ? "Generating..." : "Generate Route"}
       </button>
-    </form>
-    {/* Route Properties (move below form for left column) */}
+    </div>
+    {/* Route Properties (move below form for left column)
     {route && (
       <div style={{ marginTop: 24 }}>
         <h2>Route Properties</h2>
@@ -257,7 +265,7 @@ const RouteConfigPanel: React.FC<
           )}
         </ul>
       </div>
-    )}
+    )} */}
   </div>
 );
 
