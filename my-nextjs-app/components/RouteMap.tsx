@@ -29,7 +29,7 @@ const RouteMap: React.FC<RouteMapProps> = ({
   height = 400,
   onGoToCurrentLocation,
 }) => {
-  const mapRef = useRef<HTMLDivElement>(null);
+  const mapRef = useRef<any>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
@@ -90,6 +90,11 @@ const RouteMap: React.FC<RouteMapProps> = ({
         key={mapKey}
         center={mapCenter}
         zoom={13}
+        whenReady={(map) => {
+          // react-leaflet passes the map instance as the first argument
+          // but types may be wrong, so fallback to map.target if needed
+          mapRef.current = map && map.target ? map.target : map;
+        }}
         style={{
           height,
           width: "100%",
@@ -126,7 +131,18 @@ const RouteMap: React.FC<RouteMapProps> = ({
           ref={buttonRef}
           type="button"
           aria-label="Go to current location"
-          onClick={onGoToCurrentLocation}
+          onClick={() => {
+            onGoToCurrentLocation();
+            // Always center map on marker after location is set
+            setTimeout(() => {
+              if (mapRef.current && markerPosition) {
+                mapRef.current.setView(
+                  markerPosition,
+                  mapRef.current.getZoom()
+                );
+              }
+            }, 200);
+          }}
           style={{
             background: "#fff",
             border: "1.5px solid #cbd5e1",

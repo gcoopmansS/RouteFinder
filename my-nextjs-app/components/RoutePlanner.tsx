@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { generateRoute } from "../utils/routeGenerator";
 import dynamic from "next/dynamic";
 import RouteConfigPanel from "./RouteConfigPanel";
@@ -277,8 +277,6 @@ const CompassDirectionSelector: React.FC<{
   );
 };
 
-const PANEL_WIDTH = 420;
-
 const RoutePlanner: React.FC = () => {
   const [selectedSport, setSelectedSport] = useState("Cycling");
   const [distance, setDistance] = useState(20);
@@ -291,6 +289,8 @@ const RoutePlanner: React.FC = () => {
   const [useCurrentLocation, setUseCurrentLocation] = useState(false);
   const [isRoundTrip, setIsRoundTrip] = useState(true);
   const [direction, setDirection] = useState<number>(0);
+  const [panelWidth, setPanelWidth] = React.useState(500);
+  const dragging = React.useRef(false);
 
   // Track window height for SSR-safe rendering
   const [windowHeight, setWindowHeight] = useState(600);
@@ -369,10 +369,42 @@ const RoutePlanner: React.FC = () => {
   // Keep map center in sync with marker
   const mapCenter: [number, number] = [startLat ?? 50.8503, startLng ?? 4.3517];
 
+  // Drag handlers for resizer
+  React.useEffect(() => {
+    function onMouseMove(e: MouseEvent) {
+      if (!dragging.current) return;
+      const min = 280,
+        max = 700;
+      let newWidth = e.clientX;
+      if (newWidth < min) newWidth = min;
+      if (newWidth > max) newWidth = max;
+      setPanelWidth(newWidth);
+      // Prevent text selection while dragging
+      document.body.style.userSelect = "none";
+    }
+    function onMouseUp() {
+      dragging.current = false;
+      document.body.style.cursor = "";
+      document.body.style.userSelect = "";
+    }
+    window.addEventListener("mousemove", onMouseMove);
+    window.addEventListener("mouseup", onMouseUp);
+    return () => {
+      window.removeEventListener("mousemove", onMouseMove);
+      window.removeEventListener("mouseup", onMouseUp);
+    };
+  }, []);
+
   return (
     <div className={styles.routePlannerRoot}>
-      {/* Left: Configuration Controls */}
-      <div className={styles.configPanel}>
+      <div
+        className={styles.configPanel}
+        style={{
+          width: `${panelWidth}px`,
+          minWidth: 500,
+          maxWidth: 700,
+        }}
+      >
         <RouteConfigPanel
           selectedSport={selectedSport}
           setSelectedSport={setSelectedSport}
@@ -395,8 +427,23 @@ const RoutePlanner: React.FC = () => {
           CompassDirectionSelector={CompassDirectionSelector}
         />
       </div>
-
-      {/* Right: Map only */}
+      {/* Resizer bar */}
+      <div
+        className={styles.resizer}
+        onMouseDown={() => {
+          dragging.current = true;
+          document.body.style.cursor = "ew-resize";
+        }}
+        aria-label="Resize side panel"
+        role="separator"
+        tabIndex={0}
+        onKeyDown={(e) => {
+          if (e.key === "ArrowLeft")
+            setPanelWidth((w) => Math.max(280, w - 20));
+          if (e.key === "ArrowRight")
+            setPanelWidth((w) => Math.min(700, w + 20));
+        }}
+      />
       <div className={styles.mapPanel}>
         <div className={styles.mapInner}>
           <RouteMap

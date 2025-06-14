@@ -230,7 +230,7 @@ const RouteConfigPanel: React.FC<
         {loading ? "Generating..." : "Generate Route"}
       </button>
     </div>
-    {/* Route Properties (move below form for left column)
+    {/* Route Properties (move below form for left column) */}
     {route && (
       <div style={{ marginTop: 24 }}>
         <h2>Route Properties</h2>
@@ -265,7 +265,7 @@ const RouteConfigPanel: React.FC<
           )}
         </ul>
       </div>
-    )} */}
+    )}
   </div>
 );
 

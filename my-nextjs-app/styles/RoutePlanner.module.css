@@ -98,11 +98,41 @@
   box-sizing: border-box;
 }
 
+/* Add a resizer bar between panel and map */
+.resizer {
+  width: 8px;
+  min-width: 8px;
+  max-width: 16px;
+  cursor: ew-resize;
+  z-index: 20;
+  transition: background 0.2s;
+  height: 100%;
+  position: relative;
+  box-shadow: 1px 0 4px #e0e7ef44;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.resizer::after {
+  content: "";
+  display: block;
+  width: 3px;
+  height: 40px;
+  border-radius: 2px;
+  background: #b0b8c1;
+  opacity: 0.7;
+  margin: 0 auto;
+}
+.resizer:hover,
+.resizer.active {
+  background: #e0e7ef;
+}
+
 .configPanel {
   position: relative;
-  width: 500px;
-  min-width: 380px;
-  max-width: 500px;
+  min-width: 500px;
+  max-width: 700px;
+  width: var(--panel-width, 500px);
   height: 100%;
   background: #fff;
   z-index: 2;
@@ -110,6 +140,7 @@
   padding: 32px 32px 32px 32px;
   overflow-y: auto;
   box-sizing: border-box;
+  transition: width 0.2s;
 }
 
 .mapPanel {
