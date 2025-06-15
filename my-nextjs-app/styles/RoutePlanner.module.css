@@ -155,18 +155,3 @@
   height: 100%;
   box-sizing: border-box;
 }
-
-.sticky-submit-btn-container {
-  position: sticky;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  background: #fff;
-  padding: 16px 0 0 0;
-  z-index: 10;
-  box-shadow: 0 -2px 8px rgba(20, 184, 166, 0.04);
-  display: flex;
-  justify-content: center;
-  border-top: 1px solid #e0e7ef;
-  /* Make sure it stays above scrollable content */
-}

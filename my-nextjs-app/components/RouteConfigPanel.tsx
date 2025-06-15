@@ -58,7 +58,6 @@ const RouteConfigPanel: React.FC<
       id="route-config-form"
       onSubmit={handleSubmit}
       className="preferences-form"
-      style={{ paddingBottom: 80 }}
     >
       <h2 style={{ marginBottom: 16 }}>Plan Your Route</h2>
       <label>What's your sport?</label>
@@ -213,8 +212,6 @@ const RouteConfigPanel: React.FC<
         </div>
       )}
       {error && <div style={{ marginTop: 20, color: "#dc2626" }}>{error}</div>}
-    </form>
-    <div className="sticky-submit-btn-container">
       <button
         type="submit"
         form="route-config-form"
@@ -229,43 +226,7 @@ const RouteConfigPanel: React.FC<
       >
         {loading ? "Generating..." : "Generate Route"}
       </button>
-    </div>
-    {/* Route Properties (move below form for left column) */}
-    {route && (
-      <div style={{ marginTop: 24 }}>
-        <h2>Route Properties</h2>
-        <ul style={{ fontSize: "1.08em", color: "#334155" }}>
-          {route.features?.[0]?.properties?.summary?.distance && (
-            <li>
-              <b>Distance:</b>{" "}
-              {(route.features[0].properties.summary.distance / 1000).toFixed(
-                2
-              )}{" "}
-              km
-            </li>
-          )}
-          {route.features?.[0]?.properties?.summary?.duration && (
-            <li>
-              <b>Estimated Duration:</b>{" "}
-              {Math.round(route.features[0].properties.summary.duration / 60)}{" "}
-              min
-            </li>
-          )}
-          {route.features?.[0]?.properties?.summary?.ascent && (
-            <li>
-              <b>Total Ascent:</b> {route.features[0].properties.summary.ascent}{" "}
-              m
-            </li>
-          )}
-          {route.features?.[0]?.properties?.summary?.descent && (
-            <li>
-              <b>Total Descent:</b>{" "}
-              {route.features[0].properties.summary.descent} m
-            </li>
-          )}
-        </ul>
-      </div>
-    )}
+    </form>
   </div>
 );
 
