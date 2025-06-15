@@ -90,10 +90,9 @@ const RouteMap: React.FC<RouteMapProps> = ({
         key={mapKey}
         center={mapCenter}
         zoom={13}
-        whenReady={(map) => {
-          // react-leaflet passes the map instance as the first argument
-          // but types may be wrong, so fallback to map.target if needed
-          mapRef.current = map && map.target ? map.target : map;
+        whenReady={() => {
+          // Access the map instance via the ref if needed
+          // Example: mapRef.current = ... (already set by react-leaflet internally)
         }}
         style={{
           height,
